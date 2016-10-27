@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<!-- Executed when webFlow is triggered -->
+	<on-start>
+		<evaluate expression="new com.springapp.mvc.forms.UserForm()" result="flowScope.userForm" />
+	</on-start>
+
+	<!-- if not specified the first view state is the starting state -->
+	<view-state id="personalData" view="userUpdateData/personalData" model="flowScope.userForm">
+		<transition on="submit" to="validatePersonalData" />
+	</view-state>
+
+	<action-state id="validatePersonalData">
+		<evaluate expression="demohandler.validatePersonalData(userForm,messageContext)"></evaluate>
+		<transition on="success" to="contactsData" />
+		<transition on="failure" to="personalData" />
+	</action-state>
+
+	<view-state id="contactsData" view="userUpdateData/contactsData" model="flowScope.userForm">
+		<transition on="edit" to="personalData" />
+		<transition on="submit" to="validateContactsData" />
+	</view-state>
+
+	<action-state id="validateContactsData">
+		<evaluate expression="demohandler.validateContactsData(userForm,messageContext)"></evaluate>
+		<transition on="success" to="selectUserType" />
+		<transition on="failure" to="contactsData" />
+	</action-state>
+
+	<decision-state id="selectUserType">
+		<if test="userForm.isLegal()" then="legalData" else="ipData" />
+	</decision-state>
+	<view-state id="ipData" view="userUpdateData/phisicData" model="flowScope.userForm">
+		<transition on="edit" to="contactsData" />
+		<transition on="submit" to="validatePhisicData" />
+	</view-state>
+	<action-state id="validatePhisicData">
+		<evaluate expression="demohandler.validateContactsData(userForm,messageContext)"></evaluate>
+		<transition on="success" to="toHome" />
+		<transition on="failure" to="ipData" />
+	</action-state>
+
+	<view-state id="legalData" view="userUpdateData/legalData" model="flowScope.userForm">
+		<transition on="edit" to="contactsData" />
+		<transition on="submit" to="validateLegalData" />
+	</view-state>
+	<action-state id="validateLegalData">
+		<evaluate expression="demohandler.validateContactsData(userForm,messageContext)"></evaluate>
+		<transition on="success" to="toHome" />
+		<transition on="failure" to="legalData" />
+	</action-state>
+
+	<end-state id="toHome" view="externalRedirect:contextRelative:" />
+
+	<end-state id="toException"
+		view="externalRedirect:contextRelative:exception.jsp" />
+
+	<!-- these events are available in every state -->
+	<global-transitions>
+		<transition on="home" to="toHome" />
+		<transition on="error" to="toException" />
+	</global-transitions>
+</flow>
