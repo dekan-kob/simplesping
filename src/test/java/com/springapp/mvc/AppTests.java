@@ -43,4 +43,11 @@ public class AppTests {
                 .andExpect(status().isOk())
                 .andExpect(view().name("hello"));
     }
+
+    @Test
+    public void newTest() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("hello"));
+    }
 }
