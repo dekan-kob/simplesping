@@ -46,6 +46,7 @@ public class AppTests {
 
     @Test
     public void newTest() throws Exception {
+        //my hot fix
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("hello"));
