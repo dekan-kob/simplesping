@@ -50,9 +50,11 @@ public class AppTests {
 
     @Test
     public void newTest() throws Exception {
-        //my hot fix 2
+        //my hot fix 1
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("hello"));
+
+        //my comment
     }
 }
