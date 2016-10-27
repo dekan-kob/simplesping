@@ -32,13 +32,17 @@ public class AppTests {
 
     @Test
     public void simple() throws Exception {
+        test();
+    }
+
+    @Test
+    public void renamedTest() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("hello"));
     }
 
-    @Test
-    public void simple2() throws Exception {
+    private void test() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("hello"));
@@ -46,6 +50,7 @@ public class AppTests {
 
     @Test
     public void newTest() throws Exception {
+        //my hot fix
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("hello"));
